@@ -29,4 +29,4 @@ while gameRunning:
     pygame.display.update()
     
     
-exit()
+sys.exit()
