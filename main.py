@@ -2,7 +2,6 @@ import pygame
 import sys
 from pygame.locals import *
 import random
-import time
 
 # Define Constants
 MOUSE_SIZE = (150, 150)
@@ -13,6 +12,7 @@ scoreIncrement = 1
 
 # Initialize pygame
 pygame.init()
+pygame.font.init()
 screen = pygame.display.set_mode((626, 626), RESIZABLE)
 pygame.display.set_caption("Shooter")
 bgImg = pygame.image.load('assets/bg.png')
@@ -24,7 +24,7 @@ cursorImg = pygame.transform.scale(cursorImg, MOUSE_SIZE)
 
 # Setting coordinates of fish
 fishImg = pygame.image.load('assets/fish.png')
-newSize = (50, 50)
+newSize = (100, 100)
 fishImg = pygame.transform.scale(fishImg, newSize)
 fishCoords = [(50, 50), (202, 50), (353, 50), (504, 50),
               (50, 202), (202, 202), (353, 202), (504, 202),
@@ -37,6 +37,9 @@ clock = pygame.time.Clock()
 randomfishCoord = random.choice(fishCoords)
 fishTimer = 0
 fishMoveInterval = 1000
+
+#Setting up font
+font = pygame.font.Font(None, 36)
 
 while gameRunning:
     screen.blit(bgImg, (0, 0))
@@ -58,8 +61,10 @@ while gameRunning:
         if event.type == MOUSEBUTTONDOWN:
             if pygame.Rect(randomfishCoord, fishImg.get_size()).collidepoint(event.pos):
                 score += scoreIncrement
-                print(f"Score: {score}")
                 randomfishCoord = random.choice(fishCoords)
+    
+    scoreText = font.render(f'Score: {score}', True, (255, 255, 255))
+    screen.blit(scoreText, (10, 10))
 
     pygame.display.update()
 
