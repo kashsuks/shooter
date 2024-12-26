@@ -13,6 +13,7 @@ scoreIncrement = 1
 # Initialize pygame
 pygame.init()
 pygame.font.init()
+pygame.mixer.init()
 screen = pygame.display.set_mode((626, 626), RESIZABLE)
 pygame.display.set_caption("Shooter")
 bgImg = pygame.image.load('assets/bg.png')
@@ -41,6 +42,10 @@ fishMoveInterval = 1000
 #Setting up font
 font = pygame.font.Font(None, 36)
 
+#Load audio
+gunshotHit = pygame.mixer.Sound('assets/audio/gunshotHit.mp3')
+gunshotMiss = pygame.mixer.Sound('assets/audio/gunshotMiss.mp3')
+
 while gameRunning:
     screen.blit(bgImg, (0, 0))
 
@@ -62,6 +67,9 @@ while gameRunning:
             if pygame.Rect(randomfishCoord, fishImg.get_size()).collidepoint(event.pos):
                 score += scoreIncrement
                 randomfishCoord = random.choice(fishCoords)
+                gunshotHit.play()
+            else:
+                gunshotMiss.play()
     
     scoreText = font.render(f'Score: {score}', True, (255, 255, 255))
     screen.blit(scoreText, (10, 10))
